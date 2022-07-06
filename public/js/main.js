@@ -1,6 +1,12 @@
 import * as THREE from "/three/build/three.module.js";
+import { OrbitControls } from "/three/examples/jsm/controls/OrbitControls.js";
 import { TextureLoader } from "/three/src/loaders/TextureLoader.js";
-let scene, camera, renderer, canvas;
+let scene, camera, renderer, canvas, light, lightHelper;
+let controls, raycaster, pointer;
+let rotSpeed = 0.003;
+
+raycaster = new THREE.Raycaster();
+pointer = new THREE.Vector2();
 
 scene = new THREE.Scene();
 camera = new THREE.PerspectiveCamera(
@@ -13,15 +19,23 @@ camera = new THREE.PerspectiveCamera(
 const texture = new THREE.TextureLoader().load("/images/earth_texture.jpg");
 
 let geometry = new THREE.SphereGeometry(1, 32, 32);
-let material = new THREE.MeshBasicMaterial({ map: texture });
+let material = new THREE.MeshPhongMaterial({
+  map: texture,
+});
 let earthmesh = new THREE.Mesh(geometry, material);
 scene.add(earthmesh);
 
+const normalTexture = new THREE.TextureLoader().load(
+  "/images/earth_normal.png"
+);
+material.normalMap = normalTexture;
+material.normalScale.set(0, 0);
+
 scene.add(new THREE.AmbientLight(0x333333));
 
-let light = new THREE.DirectionalLight(0xffffff);
-let helper = new THREE.DirectionalLightHelper(light, 5);
-scene.add(helper);
+light = new THREE.DirectionalLight(0xffffff);
+//lightHelper = new THREE.DirectionalLightHelper(light, 5);
+scene.add(light);
 
 camera.position.z = 2;
 
@@ -30,6 +44,14 @@ renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
 document.body.appendChild(renderer.domElement);
 
 window.addEventListener("resize", onWindowResize, false);
+
+controls = new OrbitControls(camera, renderer.domElement);
+controls.update();
+
+function onPointerMove(event) {
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
 
 function resizeRendererToDisplaySize(renderer) {
   canvas = renderer.domElement;
@@ -53,11 +75,17 @@ function onWindowResize() {
 }
 
 function render() {
-  renderer.render(scene, camera);
+  raycaster.setFromCamera(pointer, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children);
+  for (let i = 0; i < intersects.length; i++) {}
 }
 
 function animate() {
   renderer.render(scene, camera);
+
+  earthmesh.rotation.x += rotSpeed;
+
   requestAnimationFrame(animate);
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
@@ -65,5 +93,7 @@ function animate() {
     camera.updateWorldMatrix();
   }
 }
+window.addEventListener("pointermove", onPointerMove);
 
+window.requestAnimationFrame(render);
 animate();
