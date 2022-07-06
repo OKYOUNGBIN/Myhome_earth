@@ -25,12 +25,6 @@ let material = new THREE.MeshPhongMaterial({
 let earthmesh = new THREE.Mesh(geometry, material);
 scene.add(earthmesh);
 
-const normalTexture = new THREE.TextureLoader().load(
-  "/images/earth_normal.png"
-);
-material.normalMap = normalTexture;
-material.normalScale.set(0, 0);
-
 scene.add(new THREE.AmbientLight(0x333333));
 
 light = new THREE.DirectionalLight(0xffffff);
