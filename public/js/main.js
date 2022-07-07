@@ -1,7 +1,7 @@
 import * as THREE from "/three/build/three.module.js";
 import { OrbitControls } from "/three/examples/jsm/controls/OrbitControls.js";
 import { TextureLoader } from "/three/src/loaders/TextureLoader.js";
-let scene, camera, renderer, canvas, light, lightHelper;
+let scene, camera, renderer, canvas, light, pointLight;
 let controls, raycaster, pointer;
 let rotSpeed = 0.003;
 
@@ -27,12 +27,20 @@ scene.add(earthmesh);
 
 scene.add(new THREE.AmbientLight(0x333333));
 
-light = new THREE.DirectionalLight(0xffffff);
-//lightHelper = new THREE.DirectionalLightHelper(light, 5);
-scene.add(light);
+// light = new THREE.DirectionalLight(0xffffff);
+// //lightHelper = new THREE.DirectionalLightHelper(light, 5);
+// scene.add(light);
 
+pointLight = new THREE.PointLight(0xff0000, 1, 100);
+pointLight.position.set(10, 10, 10);
+scene.add(pointLight);
+
+const sphereSize = 10;
+const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
+scene.add(pointLightHelper);
+
+console.log(pointLightHelper);
 camera.position.z = 2;
-
 canvas = document.querySelector(".c");
 renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
 document.body.appendChild(renderer.domElement);
