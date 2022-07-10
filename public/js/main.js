@@ -5,7 +5,7 @@ import { FontLoader } from "/three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "/three/examples/jsm/geometries/TextGeometry.js";
 
 let scene, camera, renderer, canvas, light, spotLight;
-let controls, raycaster, pointer, textMesh1;
+let controls, raycaster, pointer, textMesh;
 let rotSpeed = 0.003;
 
 raycaster = new THREE.Raycaster();
@@ -32,59 +32,29 @@ light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
 const fontLoader = new FontLoader();
-
 fontLoader.load(
   "/three/examples/fonts/helvetiker_bold.typeface.json",
   function (font) {
-    const textGeo = new TextGeometry("Hello three.js!", {
+    const textGeo = new TextGeometry("Click Here!", {
       font: font,
-      size: 80,
-      height: 10,
-      curveSegments: 12,
-      bevelEnabled: true,
-      bevelThickness: 10,
-      bevelSize: 8,
-      bevelOffset: 0,
-      bevelSegments: 5,
+      size: 1,
+      height: 0.1,
+      // curveSegments: 12,
+      // bevelEnabled: true,
+      // bevelThickness: 10,
+      // bevelSize: 8,
+      // bevelOffset: 0,
+      // bevelSegments: 5,
     });
     var textMaterial = new THREE.MeshPhongMaterial({
       color: 0xff0000,
       specular: 0xffffff,
     });
 
-    var mesh = new THREE.Mesh(textGeo, textMaterial);
-
-    scene.add(mesh);
-    console.log(mesh);
+    textMesh = new THREE.Mesh(textGeo, textMaterial);
+    scene.add(textMesh);
   }
 );
-
-// const fontLoader = new THREE.FontLoader();
-// fontLoader.load(
-//   "/three/examples/fonts/helvetiker_bold.typeface.json",
-//   function (font) {
-//     var textGeometry = new THREE.TextGeometry("text", {
-//       font: font,
-
-//       size: 50,
-//       height: 10,
-//       curveSegments: 12,
-
-//       bevelThickness: 1,
-//       bevelSize: 1,
-//       bevelEnabled: true,
-//     });
-
-//     var textMaterial = new THREE.MeshPhongMaterial({
-//       color: 0xff0000,
-//       specular: 0xffffff,
-//     });
-
-//     var mesh = new THREE.Mesh(textGeometry, textMaterial);
-
-//     scene.add(mesh);
-//   }
-// );
 
 // light = new THREE.DirectionalLight(0xffffff);
 // //lightHelper = new THREE.DirectionalLightHelper(light, 5);
