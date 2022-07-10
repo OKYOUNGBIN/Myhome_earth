@@ -1,8 +1,11 @@
 import * as THREE from "/three/build/three.module.js";
 import { OrbitControls } from "/three/examples/jsm/controls/OrbitControls.js";
 import { TextureLoader } from "/three/src/loaders/TextureLoader.js";
-let scene, camera, renderer, canvas, light, pointLight;
-let controls, raycaster, pointer;
+import { FontLoader } from "/three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "/three/examples/jsm/geometries/TextGeometry.js";
+
+let scene, camera, renderer, canvas, light, spotLight;
+let controls, raycaster, pointer, textMesh1;
 let rotSpeed = 0.003;
 
 raycaster = new THREE.Raycaster();
@@ -25,21 +28,75 @@ let material = new THREE.MeshPhongMaterial({
 let earthmesh = new THREE.Mesh(geometry, material);
 scene.add(earthmesh);
 
-scene.add(new THREE.AmbientLight(0x333333));
+light = new THREE.AmbientLight(0x404040); // soft white light
+scene.add(light);
+
+const fontLoader = new FontLoader();
+
+fontLoader.load(
+  "/three/examples/fonts/helvetiker_bold.typeface.json",
+  function (font) {
+    const textGeo = new TextGeometry("Hello three.js!", {
+      font: font,
+      size: 80,
+      height: 10,
+      curveSegments: 12,
+      bevelEnabled: true,
+      bevelThickness: 10,
+      bevelSize: 8,
+      bevelOffset: 0,
+      bevelSegments: 5,
+    });
+    var textMaterial = new THREE.MeshPhongMaterial({
+      color: 0xff0000,
+      specular: 0xffffff,
+    });
+
+    var mesh = new THREE.Mesh(textGeo, textMaterial);
+
+    scene.add(mesh);
+    console.log(mesh);
+  }
+);
+
+// const fontLoader = new THREE.FontLoader();
+// fontLoader.load(
+//   "/three/examples/fonts/helvetiker_bold.typeface.json",
+//   function (font) {
+//     var textGeometry = new THREE.TextGeometry("text", {
+//       font: font,
+
+//       size: 50,
+//       height: 10,
+//       curveSegments: 12,
+
+//       bevelThickness: 1,
+//       bevelSize: 1,
+//       bevelEnabled: true,
+//     });
+
+//     var textMaterial = new THREE.MeshPhongMaterial({
+//       color: 0xff0000,
+//       specular: 0xffffff,
+//     });
+
+//     var mesh = new THREE.Mesh(textGeometry, textMaterial);
+
+//     scene.add(mesh);
+//   }
+// );
 
 // light = new THREE.DirectionalLight(0xffffff);
 // //lightHelper = new THREE.DirectionalLightHelper(light, 5);
 // scene.add(light);
 
-pointLight = new THREE.PointLight(0xff0000, 1, 100);
-pointLight.position.set(10, 10, 10);
-scene.add(pointLight);
+spotLight = new THREE.SpotLight(0x78ff00, 0.5, 30, Math.PI * 0.1, 0.1, 1);
+spotLight.position.set(0, 2, 3);
+scene.add(spotLight);
 
-const sphereSize = 10;
-const pointLightHelper = new THREE.PointLightHelper(pointLight, sphereSize);
-scene.add(pointLightHelper);
+spotLight.target.position.x = -0.75;
+scene.add(spotLight.target);
 
-console.log(pointLightHelper);
 camera.position.z = 2;
 canvas = document.querySelector(".c");
 renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
