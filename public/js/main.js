@@ -5,7 +5,7 @@ import { FontLoader } from "/three/examples/jsm/loaders/FontLoader.js";
 import { TextGeometry } from "/three/examples/jsm/geometries/TextGeometry.js";
 
 let scene, camera, renderer, canvas, light, spotLight;
-let controls, raycaster, pointer, textMesh;
+let controls, raycaster, pointer, textMesh, textMaterial, textGeo, earthTexture;
 let rotSpeed = 0.003;
 
 raycaster = new THREE.Raycaster();
@@ -19,23 +19,28 @@ camera = new THREE.PerspectiveCamera(
   1000
 );
 
-const texture = new THREE.TextureLoader().load("/images/earth_texture.jpg");
+earthTexture = new THREE.TextureLoader().load("/images/earth_texture.jpg");
 
-let geometry = new THREE.SphereGeometry(1, 32, 32);
-let material = new THREE.MeshPhongMaterial({
-  map: texture,
+textMaterial = new THREE.MeshPhongMaterial({
+  color: 0xff0000,
+  specular: 0xffffff,
 });
-let earthmesh = new THREE.Mesh(geometry, material);
+
+let earthGeometry = new THREE.SphereGeometry(1, 32, 32);
+let earthMaterial = new THREE.MeshPhongMaterial({
+  map: earthTexture,
+});
+let earthmesh = new THREE.Mesh(earthGeometry, earthMaterial);
 scene.add(earthmesh);
 
 light = new THREE.AmbientLight(0x404040); // soft white light
 scene.add(light);
 
-const fontLoader = new FontLoader();
+let fontLoader = new FontLoader();
 fontLoader.load(
   "/three/examples/fonts/helvetiker_bold.typeface.json",
   function (font) {
-    const textGeo = new TextGeometry("Click Here!", {
+    textGeo = new TextGeometry("Click Here!", {
       font: font,
       size: 1,
       height: 0.1,
@@ -46,13 +51,10 @@ fontLoader.load(
       // bevelOffset: 0,
       // bevelSegments: 5,
     });
-    var textMaterial = new THREE.MeshPhongMaterial({
-      color: 0xff0000,
-      specular: 0xffffff,
-    });
-
     textMesh = new THREE.Mesh(textGeo, textMaterial);
     scene.add(textMesh);
+    textMesh.name = "link";
+    console.log(textMesh);
   }
 );
 
@@ -107,7 +109,17 @@ function render() {
   raycaster.setFromCamera(pointer, camera);
 
   const intersects = raycaster.intersectObjects(scene.children);
-  for (let i = 0; i < intersects.length; i++) {}
+  let object = intersects[0].object;
+  for (let i = 0; i < intersects.length; i++) {
+    if (object.name == "link") {
+      document.addEventListener("click", clickEvent);
+    }
+    console.log(object);
+  }
+}
+function clickEvent() {
+  let link = document.createElement("a");
+  link.src = "/main.html";
 }
 
 function animate() {
@@ -122,6 +134,7 @@ function animate() {
     camera.updateWorldMatrix();
   }
 }
+
 window.addEventListener("pointermove", onPointerMove);
 
 window.requestAnimationFrame(render);
