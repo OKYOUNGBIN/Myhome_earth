@@ -54,7 +54,6 @@ fontLoader.load(
     textMesh = new THREE.Mesh(textGeo, textMaterial);
     scene.add(textMesh);
     textMesh.name = "link";
-    console.log(textMesh);
   }
 );
 
@@ -79,18 +78,13 @@ window.addEventListener("resize", onWindowResize, false);
 controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
 
-function onPointerMove(event) {
-  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-}
-
 function resizeRendererToDisplaySize(renderer) {
   canvas = renderer.domElement;
-  var width = window.innerWidth;
-  var height = window.innerHeight;
+  let width = window.innerWidth;
+  let height = window.innerHeight;
 
-  var canvasPixelWidth = canvas.width / window.devicePixelRatio;
-  var canvasPixelHeight = canvas.height / window.devicePixelRatio;
+  let canvasPixelWidth = canvas.width / window.devicePixelRatio;
+  let canvasPixelHeight = canvas.height / window.devicePixelRatio;
 
   const needResize = canvasPixelWidth !== width || canvasPixelHeight !== height;
   if (needResize) {
@@ -105,18 +99,21 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function onPointerClick(event) {
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
   raycaster.setFromCamera(pointer, camera);
 
   const intersects = raycaster.intersectObjects(scene.children);
-  let object = intersects[0].object;
-  for (let i = 0; i < intersects.length; i++) {
+  if (intersects.length > 0) {
+    let object = intersects[0].object;
     if (object.name == "link") {
-      document.addEventListener("click", clickEvent);
+      clickEvent();
     }
-    console.log(object);
   }
 }
+function render() {}
+
 function clickEvent() {
   let link = document.createElement("a");
   link.src = "/main.html";
@@ -129,13 +126,13 @@ function animate() {
 
   requestAnimationFrame(animate);
   if (resizeRendererToDisplaySize(renderer)) {
-    const canvas = renderer.domElement;
+    canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateWorldMatrix();
   }
 }
 
-window.addEventListener("pointermove", onPointerMove);
+window.addEventListener("click", onPointerClick);
 
 window.requestAnimationFrame(render);
 animate();
