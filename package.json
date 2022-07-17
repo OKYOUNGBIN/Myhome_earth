@@ -5,7 +5,7 @@
   },
   "name": "threejs_myhome",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "intro.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

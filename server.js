@@ -11,7 +11,7 @@ app.use(express.static("node_modules"));
 
 // 맨 처음 화면을 intro.html로 설정
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/intro.html");
+  res.sendFile(__dirname + "/html/intro.html");
 });
 
 // 3000 포트로 서버 오픈
