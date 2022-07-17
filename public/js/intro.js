@@ -108,7 +108,7 @@ function onPointerClick(event) {
   if (intersects.length > 0) {
     let object = intersects[0].object;
     if (object.name == "link") {
-      window.location.href = "/html/main.html";
+      window.location.href = "/main";
     }
   }
 }

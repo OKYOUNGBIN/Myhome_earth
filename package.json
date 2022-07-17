@@ -5,11 +5,21 @@
   },
   "name": "threejs_myhome",
   "version": "1.0.0",
-  "main": "intro.js",
+  "main": "/intro.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OKYOUNGBIN/Myhome_earth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OKYOUNGBIN/Myhome_earth/issues"
+  },
+  "homepage": "https://github.com/OKYOUNGBIN/Myhome_earth#readme",
   "description": ""
 }
