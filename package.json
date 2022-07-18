@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bootstrap": "^5.1.3",
     "express": "^4.18.1",
     "three": "^0.142.0"
   },
@@ -12,7 +13,6 @@
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OKYOUNGBIN/Myhome_earth.git"
