@@ -57,10 +57,6 @@ fontLoader.load(
   }
 );
 
-// light = new THREE.DirectionalLight(0xffffff);
-// //lightHelper = new THREE.DirectionalLightHelper(light, 5);
-// scene.add(light);
-
 spotLight = new THREE.SpotLight(0x78ff00, 0.5, 30, Math.PI * 0.1, 0.1, 1);
 spotLight.position.set(0, 2, 3);
 scene.add(spotLight);
@@ -112,11 +108,8 @@ function onPointerClick(event) {
     }
   }
 }
-function render() {}
 
 function animate() {
-  renderer.render(scene, camera);
-
   earthmesh.rotation.x += rotSpeed;
 
   requestAnimationFrame(animate);
@@ -125,11 +118,11 @@ function animate() {
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateWorldMatrix();
   }
+  renderer.render(scene, camera);
 }
 
 window.addEventListener("click", onPointerClick);
 
-window.requestAnimationFrame(render);
 animate();
 
 export { scene, camera, renderer };

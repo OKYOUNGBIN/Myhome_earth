@@ -67,3 +67,8 @@ header.sticky .logo,
 header.sticky ul li a {
   color: #000;
 }
+
+#c {
+  width: 100%;
+  height: 100vh;
+}
