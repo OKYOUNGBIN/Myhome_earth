@@ -1,15 +1,13 @@
 import * as THREE from "/three/build/three.module.js";
 
-let scene, camera, renderer, canvas, raycaster, pointer;
+let scene, camera, renderer, canvas, raycaster, pointer, section;
 
 window.addEventListener("scroll", function () {
   let header = this.document.querySelector("header");
   header.classList.toggle("sticky", window.scrollY > 0);
 });
 
-canvas = document.getElementById("c");
-renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-document.body.appendChild(renderer.domElement);
+section = document.querySelector("section.book");
 
 scene = new THREE.Scene();
 camera = new THREE.PerspectiveCamera(
@@ -18,6 +16,10 @@ camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
+
+canvas = document.getElementById("c");
+renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+section.appendChild(renderer.domElement);
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
