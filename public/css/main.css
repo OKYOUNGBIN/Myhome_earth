@@ -76,6 +76,7 @@ section.content {
   padding: 32px;
 
   position: relative;
+  z-index: 1;
 }
 section.content h1 {
   margin-bottom: 32px;
