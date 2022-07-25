@@ -7,9 +7,13 @@
 }
 
 body {
-  background: #000;
+  background-color: #4cc1d4ff;
   min-height: 200vh;
   color: #fff;
+  font-size: 36px;
+  line-height: 1.25;
+
+  min-height: calc(3000px + 100vh);
 }
 
 header {
@@ -23,6 +27,7 @@ header {
   transition: 0.6s;
   padding: 40px 100px;
   z-index: 1;
+  overflow-y: hidden;
 }
 header.sticky {
   padding: 5px 100px;
@@ -37,6 +42,7 @@ header .logo {
   text-transform: uppercase;
   letter-spacing: 2px;
   transition: 0.6s;
+  overflow-y: hidden;
 }
 
 header ul {
@@ -44,11 +50,13 @@ header ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow-y: hidden;
 }
 
 header ul li {
   position: relative;
   list-style: none;
+  overflow-y: hidden;
 }
 header ul li a {
   position: relative;
@@ -70,7 +78,7 @@ section.book {
   z-index: 0;
 }
 
-section.content {
+section#content {
   width: 50%;
   max-width: 600px;
   padding: 32px;
@@ -78,19 +86,22 @@ section.content {
   position: relative;
   z-index: 1;
 }
-section.content h1 {
+section#content h1 {
   margin-bottom: 32px;
+  overflow-y: hidden;
 }
-section.content p {
+section#content p {
   margin-bottom: 256px;
+  overflow-y: hidden;
 }
-section.content li {
+section#content li {
   margin-bottom: 32px;
   padding-left: 48px;
   position: relative;
+  overflow-y: hidden;
 }
 
-section.content li::before {
+section#content li::before {
   content: "\2014\00A0";
   position: absolute;
   top: 0;

@@ -42,7 +42,7 @@ const materials = urls.map((url) => {
 });
 
 canvas = document.getElementById("c");
-renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 section.appendChild(renderer.domElement);
 
 const geometry = new THREE.BoxGeometry(3.5, 5, 0.5);
@@ -78,6 +78,9 @@ function resizeRendererToDisplaySize(renderer) {
   return needResize;
 }
 
+let currentTimeline = window.pageXOffset / 3000;
+let aimTimeline = window.pageXOffset / 3000;
+
 function animate() {
   //raycaster.setFromCamera(pointer, camera);
 
@@ -88,8 +91,12 @@ function animate() {
   //  intersects[i].object.material.color.set(0xff0000);
   //}
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  currentTimeline += (aimTimeline - currentTimeline) * 0.1;
+
+  const rx = currentTimeline * -0.5 + 0.5;
+  const ry = (currentTimeline * 0.9 + 0.1) * Math.PI * 2;
+
+  cube.rotation.set(rx, ry, 0);
 
   requestAnimationFrame(animate);
   if (resizeRendererToDisplaySize(renderer)) {
@@ -102,3 +109,7 @@ function animate() {
 }
 
 animate();
+
+window.addEventListener("scroll", function () {
+  aimTimeline = window.pageYOffset / 3000;
+});
