@@ -11,11 +11,15 @@ app.use(express.static("node_modules"));
 
 // 맨 처음 화면을 intro.html로 설정
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/intro.html");
+  res.sendFile(__dirname + "/public/html/intro.html");
 });
 
 app.get("/main", function (req, res) {
-  res.sendFile(__dirname + "/main.html");
+  res.sendFile(__dirname + "/public/html/main.html");
+});
+
+app.get("/book", function (req, res) {
+  res.sendFile(__dirname + "/public/html/book.html");
 });
 
 // 3000 포트로 서버 오픈
