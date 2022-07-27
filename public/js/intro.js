@@ -65,7 +65,7 @@ spotLight.target.position.x = -0.75;
 scene.add(spotLight.target);
 
 camera.position.z = 2;
-canvas = document.querySelector(".c");
+canvas = document.querySelector("#c");
 renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
 document.body.appendChild(renderer.domElement);
 
