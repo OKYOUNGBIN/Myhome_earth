@@ -2,6 +2,8 @@
   "dependencies": {
     "bootstrap": "^5.1.3",
     "express": "^4.18.1",
+    "maptalks": "^1.0.0-rc.9",
+    "maptalks.three": "^0.28.1",
     "three": "^0.142.0"
   },
   "name": "threejs_myhome",

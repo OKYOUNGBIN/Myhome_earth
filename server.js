@@ -22,6 +22,10 @@ app.get("/book", function (req, res) {
   res.sendFile(__dirname + "/public/html/book.html");
 });
 
+app.get("/map", function (req, res) {
+  res.sendFile(__dirname + "/public/html/map.html");
+});
+
 // 3000 포트로 서버 오픈
 app.listen(PORT, function () {
   console.log(`START! Express server on port ${PORT}`);
