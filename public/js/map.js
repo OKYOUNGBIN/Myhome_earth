@@ -1,32 +1,69 @@
-import * as maptalks from "/maptalks/dist/maptalks.min.js";
 import * as THREE from "/three/build/three.module.js";
-//plugin's classes should be imported directly like
-//import { ThreeLayer } from "/maptalks.three/dist/maptalks.three.min.js";
 
-let canvas = document.getElementById("c");
-const map = new maptalks.Map(canvas, {
-  center: [0, 0],
-  zoom: 1,
+mapboxgl.accessToken =
+  "pk.eyJ1IjoicmVkbWFuZ29zIiwiYSI6ImNsNmFxMG1qZjA5Y2QzZG5wdHViZDc5OGIifQ.VvjEkcRj4aO5m8aizq-3Bg";
+const map = new mapboxgl.Map({
+  style: "mapbox://styles/mapbox/light-v10",
+  center: [126.986, 37.541],
+  zoom: 15.5,
+  pitch: 45,
+  bearing: -17.6,
+  container: "map",
+  antialias: true,
 });
 
-const layer = new ThreeLayer("three");
+map.on("load", () => {
+  // Insert the layer beneath any symbol layer.
+  const layers = map.getStyle().layers;
+  const labelLayerId = layers.find(
+    (layer) => layer.type === "symbol" && layer.layout["text-field"]
+  ).id;
+  map.addSource("mapbox-dem", {
+    type: "raster-dem",
+    url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+    tileSize: 512,
+    maxzoom: 14,
+  });
+  // add the DEM source as a terrain layer with exaggerated height
+  map.setTerrain({ source: "mapbox-dem", exaggeration: 1.5 });
+  // The 'building' layer in the Mapbox Streets
+  // vector tileset contains building height data
+  // from OpenStreetMap.
+  map.addLayer(
+    {
+      id: "add-3d-buildings",
+      source: "composite",
+      "source-layer": "building",
+      filter: ["==", "extrude", "true"],
+      type: "fill-extrusion",
+      minzoom: 15,
+      paint: {
+        "fill-extrusion-color": "#aaa",
 
-// var threeLayer = new maptalks.ThreeLayer("t");
-// threeLayer.prepareToDraw = function (gl, scene, camera) {
-//   var light = new THREE.DirectionalLight(0xffffff);
-//   light.position.set(0, -10, -10).normalize();
-//   scene.add(light);
-
-//   var material = new THREE.MeshPhongMaterial();
-//   countries.features.forEach(function (g) {
-//     //g is geojson Feature
-//     var num = g.properties.population;
-
-//     var extrudePolygon = threeLayer.toExtrudePolygon(
-//       g,
-//       { height: num },
-//       material
-//     );
-//     threeLayer.addMesh(extrudePolygon);
-//   });
-// };
+        // Use an 'interpolate' expression to
+        // add a smooth transition effect to
+        // the buildings as the user zooms in.
+        "fill-extrusion-height": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          15,
+          0,
+          15.05,
+          ["get", "height"],
+        ],
+        "fill-extrusion-base": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          15,
+          0,
+          15.05,
+          ["get", "min_height"],
+        ],
+        "fill-extrusion-opacity": 0.6,
+      },
+    },
+    labelLayerId
+  );
+});
