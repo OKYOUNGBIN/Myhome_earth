@@ -18,6 +18,19 @@ map.on("load", () => {
   const labelLayerId = layers.find(
     (layer) => layer.type === "symbol" && layer.layout["text-field"]
   ).id;
+  map.addSource("dem", {
+    type: "raster-dem",
+    url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+  });
+  map.addLayer({
+    id: "hillshading",
+    source: "dem",
+    "source-layer": "waterway",
+    type: "hillshade",
+
+    // insert below waterway-river-canal-shadow;
+    // where hillshading sits in the Mapbox Outdoors style
+  });
   map.addSource("mapbox-dem", {
     type: "raster-dem",
     url: "mapbox://mapbox.mapbox-terrain-dem-v1",
